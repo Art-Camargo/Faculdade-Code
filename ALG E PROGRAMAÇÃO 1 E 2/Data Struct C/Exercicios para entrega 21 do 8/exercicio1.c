@@ -10,6 +10,7 @@ A quantidade de pacientes atendidos para realizar exames de Sangue.
 OBS: Apresente os dados com a seguinte construção (endereço do nó, valores do nó, valor do próximo). 
 */
 //sComo não foi especificado qual ou como será a senha, assumi que a senha começa em 0 e incrementa a cada cliente.
+//Artur de Camargo e Gabriel Pinos Camargo
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -25,7 +26,7 @@ typedef struct pacientes {
 int read_patient_data() {
   int opcao_data;
   do{
-    printf("\nInforme apenas os numeros vvalidos: ");
+    printf("\nInforme apenas os numeros validos: ");
     scanf("%d", &opcao_data);
   } while (opcao_data > 2 || opcao_data < 1);
   return opcao_data;
@@ -125,7 +126,9 @@ int main() {
   paciente *first_patient = NULL;
   int op, senha = 0, count_exames = 0, count_plano = 0;
   do {
+    system("cls||clear");
     op = menu_option();
+    system("cls||clear");
     switch (op){
       case 1:
         get_patient_data(&first_patient, senha);

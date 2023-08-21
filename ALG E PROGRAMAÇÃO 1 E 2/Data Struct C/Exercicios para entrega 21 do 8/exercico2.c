@@ -10,6 +10,7 @@ typedef struct dados {
   struct dados *next;
 }dado;
 
+//Artur de Camargo e Gabriel Pinos Camargo
 
 bool valida_cpf(char userCpf[]) {
   int i, j, digito1 = 0, digito2 = 0;

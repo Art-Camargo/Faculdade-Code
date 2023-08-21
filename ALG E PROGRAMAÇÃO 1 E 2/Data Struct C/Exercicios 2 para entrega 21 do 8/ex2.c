@@ -1,3 +1,5 @@
+//Artur de Camargo e Gabriel Pinos Camargo
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>

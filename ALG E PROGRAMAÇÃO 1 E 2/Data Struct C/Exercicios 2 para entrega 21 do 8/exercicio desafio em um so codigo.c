@@ -1,3 +1,5 @@
+//USAMOS O BUBBLE SORT
+//Artur de Camargo e Gabriel Pinos Camargo
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -6,13 +8,13 @@ typedef struct node {
   int val;
 }Node;
 
-
 int retorna_valor() {
   int value;
   printf("\nInforme um valor: ");
   scanf("%d", &value);
   return value;
 }
+
 int menuOption() {
   int menu;
   do {
@@ -35,7 +37,7 @@ void printa_lista(Node *inicio_list) {
     }
   }
 }
-
+//Bubble sort
 void ordena_lista(Node *beg) {
   Node *aux_beg = beg, *proxPonteiro;
   int auxiliador;
@@ -76,7 +78,6 @@ void insertLeft(Node **pointerIndex) {
     printf("\nEm 2023+ e estamos sem memoria");
   }
 }
-
 
 int main() {
   Node *inicio = NULL;

@@ -1,4 +1,6 @@
 #include <stdio.h>
+//Artur de Camargo e Gabriel Pinos Camargo
+
 void parametro_por_referencia(int *valor) {
   *valor = 10;
 }
