@@ -52,7 +52,7 @@ void empilha_fim(No **TopoLista, int valor) {
 		ponteiro->value = valor;
 		if(*TopoLista == NULL) {
 			*TopoLista = ponteiro;
-		}
+		} 
 		else {
 			while(ponteiroFinal->next != NULL && valido) {
         if (ponteiroFinal->next == *TopoLista) {

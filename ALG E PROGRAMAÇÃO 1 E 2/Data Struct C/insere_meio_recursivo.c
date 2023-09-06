@@ -91,14 +91,14 @@ bool searchNumList(TypeNode *beg, int value) {
   if (beg != NULL) {
     while(aux != NULL) {
       if (value == aux->value) {
-        printf("\nNumero %d", aux->value);
+        printf("\nNumero %d, current: %p, next: %p", aux->value, aux, aux->next);
         achou = true;
       }
       aux = aux->next;
     }
   }
   return achou;
-}
+} 
 
 void removeFromList(TypeNode **begList, int value, TypeNode *current, TypeNode *prev) {
   TypeNode *freeP;
