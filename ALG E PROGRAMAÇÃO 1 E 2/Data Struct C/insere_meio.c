@@ -104,8 +104,8 @@ void removeFromList(TypeNode **begList, int valor) {
   TypeNode *ptr = *begList, *before = NULL, *auxFree;
   while (ptr != NULL) {
     if (ptr->value == valor) {
-      if (before == NULL) {
-        *begList = ptr->next;
+      if (before == NULL) {    //       b   x p
+        *begList = ptr->next; //  2 3 4 5  NULL
         auxFree = ptr;
         ptr = ptr->next;
         free(auxFree);

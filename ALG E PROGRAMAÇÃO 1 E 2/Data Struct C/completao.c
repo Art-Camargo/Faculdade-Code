@@ -1,19 +1,23 @@
+//Artur de Camargo
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-typedef struct node {
+typedef struct node { //Struct padrão para manipular a lista
   int value;
   struct node* next;
 }TypeNode;
 
-int returnIntValue() {
+int returnIntValue() { //para inserir valores, a função retorna o valor a ser inserido
   int num;
   printf("\nEnter a int number: ");
   scanf("%d", &num);
   return num;
 }
 
-void addListBeginning(TypeNode **startList, int val) {
+//Adiciona um número no começo da lista
+void addListBeginning(TypeNode **startList, int val) { 
   TypeNode *node_var = (TypeNode*)malloc(sizeof(TypeNode));
   if (node_var != NULL) {
     if (*startList == NULL) {
@@ -28,6 +32,7 @@ void addListBeginning(TypeNode **startList, int val) {
   }
 }
 
+//Printa os valores da lista (caso esteja circular, printa circular)
 void printList(TypeNode *InicioStack) {
 	TypeNode *toEndStack, *aux;
   bool valido = true;
@@ -48,6 +53,8 @@ void printList(TypeNode *InicioStack) {
 	}
 }
 
+
+//Função que adiciona um elemento antes do K (todas as ocorrências) no meio
 void addMidList(TypeNode **beg, int val, int mid) {
   TypeNode *aux = *beg, *beforePointer = NULL, *newNode; 
   bool inserted = false, thereIs = false; 
@@ -81,6 +88,7 @@ void addMidList(TypeNode **beg, int val, int mid) {
   }
 }
 
+//Remove do começo
 void pop(TypeNode **FirstPointer) {
 	TypeNode *PointerStruct = *FirstPointer;
 	if(*FirstPointer == NULL) { 
@@ -92,6 +100,7 @@ void pop(TypeNode **FirstPointer) {
 	}
 }
 
+//remove do fim
 void desempilha(TypeNode **InicioAtual) {
 	TypeNode *ponteiroFree = *InicioAtual, *ponteiroAnt;
 	if(ponteiroFree == NULL) {
@@ -113,6 +122,7 @@ void desempilha(TypeNode **InicioAtual) {
 	}
 }
 
+//Retorna o Menu
 int menuOption() {
   int opcao;
   do {
@@ -125,6 +135,7 @@ int menuOption() {
   return opcao;
 }
 
+//Adiciona no fim
 void empilha_fim(TypeNode **TopoLista, int valor) {
 	TypeNode *ponteiro = (TypeNode*)malloc(sizeof(TypeNode)), *ponteiroFinal = *TopoLista;
   bool valido = true;
@@ -153,6 +164,7 @@ void empilha_fim(TypeNode **TopoLista, int valor) {
 	}
 }
 
+//procura um valor na lista
 bool searchNumList(TypeNode *beg, int value) {
   TypeNode *aux = beg;
   bool achou = false;
@@ -168,6 +180,7 @@ bool searchNumList(TypeNode *beg, int value) {
   return achou;
 }
 
+//Ordena a lista com bubble sort
 void bubbleSortList(TypeNode *inicio_lista) {
   TypeNode *ponteiro_atual, *proximo_ponteiro;
   int valor_troca, troca_realizada;
@@ -176,7 +189,6 @@ void bubbleSortList(TypeNode *inicio_lista) {
       troca_realizada = 0;
       ponteiro_atual = inicio_lista;
       proximo_ponteiro = inicio_lista->next;
-
       while (proximo_ponteiro != NULL) {
         if (ponteiro_atual->value > proximo_ponteiro->value) {
           valor_troca = ponteiro_atual->value;
@@ -191,7 +203,7 @@ void bubbleSortList(TypeNode *inicio_lista) {
   }
 }
 
-
+//remove um valor do meio da lista
 void removeFromList(TypeNode **begList, int value, TypeNode *current, TypeNode *prev) {
   TypeNode *freeP;
   if (current != NULL) {
@@ -217,30 +229,32 @@ void removeFromList(TypeNode **begList, int value, TypeNode *current, TypeNode *
   }
 }
 
-void circular(TypeNode *doisPiR, TypeNode *aux) {
-  if (doisPiR == NULL ) {
+//Transforma a lista em circular
+void circular(TypeNode *comeco_circulo, TypeNode *aux) {
+  if (comeco_circulo == NULL ) {
     printf("\nNAO TEM COMO TRANSFORMAR EM CIRCULAR");
   }
   else {
-    if (aux->next == doisPiR || aux->next == NULL) {
-      aux->next = doisPiR;
+    if (aux->next == comeco_circulo || aux->next == NULL) {
+      aux->next = comeco_circulo;
     }
     else {
-      circular(doisPiR, aux->next);
+      circular(comeco_circulo, aux->next);
     }
   }
 }
 
-void encadeado(TypeNode *PiRQuadrado, TypeNode *auxPi) {
-  if (auxPi == NULL || PiRQuadrado == NULL) {
+//Transforma em encadeada (caso esteja em circular)
+void encadeado(TypeNode *comeco_encadeada, TypeNode *auxPi) {
+  if (auxPi == NULL || comeco_encadeada == NULL) {
     printf("\nNao ha numeros na lista");
   }
   else {
-    if (auxPi->next == PiRQuadrado || auxPi->next == NULL) {
+    if (auxPi->next == comeco_encadeada || auxPi->next == NULL) {
       auxPi->next = NULL;
     } 
     else {
-      encadeado(PiRQuadrado, auxPi->next);
+      encadeado(comeco_encadeada, auxPi->next);
     }
   }
 }

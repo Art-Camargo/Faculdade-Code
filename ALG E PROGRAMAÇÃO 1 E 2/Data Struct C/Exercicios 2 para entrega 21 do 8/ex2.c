@@ -39,7 +39,7 @@ void insere_fim(Node **ini) {
 }
 
 void ordena_lista(Node *beg) {
-  Node *aux_beg = beg, *proxPonteiro;
+  Node *aux_beg = beg, *proxPonteiro; //ponteiro inicio, 
   int auxiliador;
   if (aux_beg->nxt != NULL) {
     while(aux_beg != NULL) {

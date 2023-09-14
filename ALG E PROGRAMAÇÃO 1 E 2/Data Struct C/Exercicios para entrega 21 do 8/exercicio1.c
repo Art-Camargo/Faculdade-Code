@@ -19,7 +19,7 @@ OBS: Apresente os dados com a seguinte construção (endereço do nó, valores d
 
 typedef struct pacientes {
   struct pacientes *next;
-  char blood_teste_modality[7], health_insurance[7];
+  char blood_test_modality[7], health_insurance[7];
   int password;
 }paciente;
 
@@ -53,7 +53,7 @@ void get_patient_data(paciente **first, int pass) { //a inserção é feita pelo
 
     printf("\nInforme, em inteiro.\n1 - exame de sangue ou 2 - exame de imagem");
     escolha = read_patient_data();
-    aloca_ecolha("sangue", "imagem", escolha, newPacient->blood_teste_modality);
+    aloca_ecolha("sangue", "imagem", escolha, newPacient->blood_test_modality);
     if (*first == NULL) {
       newPacient->next = NULL;
       *first = newPacient;
@@ -83,7 +83,7 @@ int menu_option() {
 void printa_tudo(paciente *first) {
   paciente *aux_print = first;
   while(aux_print != NULL) {
-    printf("\nsenha: %d\tplano: %s\texame: %s\tponteiro: %p\tprox: %p", aux_print->password, aux_print->health_insurance, aux_print->blood_teste_modality, aux_print, aux_print->next);
+    printf("\nsenha: %d\tplano: %s\texame: %s\tponteiro: %p\tprox: %p", aux_print->password, aux_print->health_insurance, aux_print->blood_test_modality, aux_print, aux_print->next);
     aux_print = aux_print->next;
   }
 }
@@ -96,7 +96,7 @@ int exame_counter(char exame[], paciente *stPacient) {
   }
   else {
     while(st != NULL) {
-      if (!strcmp(st->blood_teste_modality, exame)) {
+      if (!strcmp(st->blood_test_modality, exame)) {
         count++;
       }
       st = st->next;

@@ -25,17 +25,16 @@ int menuOption() {
 }
 
 void printStack(No *InicioStack) {
-	No *toEndStack, *aux;
+	No *toEndStack;
   bool valido = true;
-  system("clear");
+  system("clear||cls");
 	if(InicioStack == NULL) {
 		printf("\nNao ha pilha para printar!");
 	} 
 	else {
     toEndStack = InicioStack;
-    aux = InicioStack;
 		while(toEndStack != NULL && valido) {
-      if (toEndStack->next == aux) {
+      if (toEndStack->next == InicioStack) {
         valido = false;
       }
 			printf("\nvalor: %d, current: %p, next: %p", toEndStack->value, toEndStack, toEndStack->next);
@@ -106,7 +105,7 @@ int main() {
   No *inicio = NULL;
   do {
     op = menuOption();
-    system("clear");
+    system("clear||cls");
     switch (op) {
     case 1:
       valor = le_valor();
