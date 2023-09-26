@@ -11,23 +11,37 @@ typedef struct list {
 int menu() {
   int op;
   do {
-    printf("\n\t1 - Inserir inicio");
-    printf("\n\t2 - Inserir fim");
-    printf("\n\t3 - printar lista");
-    printf("\n\t4 - remover Inicio");
-    printf("\n\t5 - remover fim");
-    printf("\n\t6 - remover meio");
-    printf("\n\t7 - adicionar meio");
-    printf("\n\t8 - Kill terminal");
+    printf("\n\t1 - Inserir inicio\n\t2 - Inserir fim");
+    printf("\n\t3 - printar lista\n\t4 - remover Inicio");
+    printf("\n\t5 - remover fim\n\t6 - remover meio");
+    printf("\n\t7 - adicionar meio\n\t8 - Kill terminal");
     printf("\n\tEscolha uma opcao acima: ");
     scanf("%d", &op);
   } while(op > 8 || op < 1);
   return op;
 }
 
-int returnInt() {
+void push(list **beg, int val) {
+  list *newVal = (list*)malloc(sizeof(list)), *aux = *beg;
+  if (newVal != NULL) {
+    newVal->value = val;
+    if (*beg == NULL) {
+      *beg = newVal;
+      newVal->next = NULL;
+      newVal->prev = NULL;
+    }
+    else {
+      newVal->next = *beg;
+      *beg = newVal;
+      newVal->prev = NULL;
+      aux->prev = newVal;
+    }
+  }
+}
+
+int returnInt(char frase[]) {
   int num;
-  printf("\n\tInforme um valor: ");
+  printf("\n\t%s", frase);
   scanf("%d", &num);
   return num;
 }
@@ -84,24 +98,6 @@ void removeMid(list **beg, list *auxBeg, int val, bool isBeg) {
     }
     else {
       removeMid(beg, auxBeg->next, val, false);
-    }
-  }
-}
-
-void push(list **beg, int val) {
-  list *newVal = (list*)malloc(sizeof(list)), *aux = *beg;
-  if (newVal != NULL) {
-    newVal->value = val;
-    if (*beg == NULL) {
-      *beg = newVal;
-      newVal->next = NULL;
-      newVal->prev = NULL;
-    }
-    else {
-      newVal->next = *beg;
-      *beg = newVal;
-      newVal->prev = NULL;
-      aux->prev = newVal;
     }
   }
 }
@@ -180,11 +176,11 @@ int main() {
     system("cls||clear");
     switch (option) {
     case 1: 
-      val = returnInt();
+      val = returnInt("Informe um valor para ser inserido no comeco: ");
       push(&beggining, val);
       break;
     case 2:
-      val = returnInt();
+      val = returnInt("Informe um valor para ser inserido no fim: ");
       toEnd(&beggining, val);
       break;
     case 3:
@@ -197,15 +193,12 @@ int main() {
       removeEnd(&beggining);
       break;
     case 6:
-      printf("\nPara remover no meio, informe");
-      val = returnInt();
+      val = returnInt("Para remover no meio, informe um valor a ser removido: ");
       removeMid(&beggining, beggining, val, true);
       break;
     case 7:
-      printf("\n\tPara Inserir no meio, informe o valor que sera inserido\n");
-      val = returnInt();
-      printf("\n\tPara Inserir no meio, informe o valor que sera interpratdo com o K (valor do meio)\n");
-      search = returnInt();
+      val = returnInt("Para Inserir no meio, informe o valor que sera inserido: ");
+      search = returnInt("Para Inserir no meio, informe o valor que sera interpratdo com o K (valor do meio): ");
       addMid(&beggining, beggining, val, search, true);
       break;
     case 8:
