@@ -1,7 +1,6 @@
 #include <stdio.h>
 #define TAM 6
-main()
-{
+main() {
 	int i, j, matriz[TAM][TAM], aux = TAM - 1, acima=0, abaixo=0;
 	for(i=0; i<TAM; i++){
 		for(j=0; j<TAM; j++){
