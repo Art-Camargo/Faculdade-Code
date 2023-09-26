@@ -250,7 +250,7 @@ void encadeado(TypeNode *comeco_encadeada, TypeNode *auxPi) {
     printf("\nNao ha numeros na lista");
   }
   else {
-    if (auxPi->next == comeco_encadeada || auxPi->next == NULL) {
+    if (auxPi->next != comeco_encadeada || auxPi->next) {
       auxPi->next = NULL;
     } 
     else {
