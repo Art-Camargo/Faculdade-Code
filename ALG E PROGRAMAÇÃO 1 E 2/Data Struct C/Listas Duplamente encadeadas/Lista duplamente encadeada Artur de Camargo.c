@@ -42,8 +42,11 @@ int main() {
       encadeada(&beggining, beggining);
       break;
     case 9:
+      sort(beggining);
+      break;
+    case 10:
       printf("\nPrograma finalizado\n");
       break;
     }
-  } while(option != 9);
+  } while(option != 10);
 }

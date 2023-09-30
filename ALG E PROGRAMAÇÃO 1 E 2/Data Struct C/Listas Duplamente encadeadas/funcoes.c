@@ -14,10 +14,10 @@ int menu() {
     printf("\n\t1 - Inserir inicio\n\t2 - Inserir fim");
     printf("\n\t3 - printar lista encadeada\n\t4 - remover Inicio");
     printf("\n\t5 - remover fim\n\t6 - remover meio");
-    printf("\n\t7 - adicionar meio\n\t8 - printar lista circular\n\t9 - Kill terminal");
+    printf("\n\t7 - adicionar meio\n\t8 - printar lista circular\n\t9 - Ordenar\n\t10 - Finaliza");
     printf("\n\tEscolha uma opcao acima: ");
     scanf("%d", &op);
-  } while(op > 9 || op < 1);
+  } while(op > 10 || op < 1);
   return op;
 }
 
@@ -42,6 +42,26 @@ void transformaCircular(list *start, list *end) {
       end->next = start;
       start->prev = end;
     }
+  }
+}
+
+void swap(list *start, list *aux) {
+  int Swap = start->value;
+  start->value = aux->value;
+  aux->value = Swap;
+}
+
+void sort(list *start) { 
+  if (start != NULL) {
+    list *current = start->next;
+    while (current != NULL) {
+      if (start->value > current->value) {
+        swap(start, current);
+        current = start;
+      }
+      current = current->next;
+    }
+    sort(start->next); 
   }
 }
 
