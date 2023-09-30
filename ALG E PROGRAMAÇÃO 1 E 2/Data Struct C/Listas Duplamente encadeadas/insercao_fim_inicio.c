@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "funcoes.c"
-  
+
 int main() {
   list *beggining = NULL;
   int option, val, search;
@@ -37,8 +37,13 @@ int main() {
       addMid(&beggining, beggining, val, search, true);
       break;
     case 8:
-      printf("\nPrograma finalizado");
+      transformaCircular(beggining, beggining);
+      printCircular(beggining, beggining, true);
+      encadeada(&beggining, beggining);
+      break;
+    case 9:
+      printf("\nPrograma finalizado\n");
       break;
     }
-  } while(option != 8);
+  } while(option != 9);
 }

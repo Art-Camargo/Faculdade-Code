@@ -12,13 +12,49 @@ int menu() {
   int op;
   do {
     printf("\n\t1 - Inserir inicio\n\t2 - Inserir fim");
-    printf("\n\t3 - printar lista\n\t4 - remover Inicio");
+    printf("\n\t3 - printar lista encadeada\n\t4 - remover Inicio");
     printf("\n\t5 - remover fim\n\t6 - remover meio");
-    printf("\n\t7 - adicionar meio\n\t8 - Kill terminal");
+    printf("\n\t7 - adicionar meio\n\t8 - printar lista circular\n\t9 - Kill terminal");
     printf("\n\tEscolha uma opcao acima: ");
     scanf("%d", &op);
-  } while(op > 8 || op < 1);
+  } while(op > 9 || op < 1);
   return op;
+}
+
+void encadeada(list **beg, list *aux) {
+  if (*beg != NULL && aux != NULL) {
+    if (aux->next == *beg) {
+      aux->next->prev = NULL;
+      aux->next = NULL;
+    }
+    else {
+      encadeada(beg, aux->next);
+    }
+  }
+}
+
+void transformaCircular(list *start, list *end) {
+  if (start != NULL) {
+    if (end->next != NULL) {
+      transformaCircular(start, end->next);
+    }
+    else {
+      end->next = start;
+      start->prev = end;
+    }
+  }
+}
+
+void printCircular(list *beg, list *auxPrint, bool first) {
+  if (beg != NULL ) {
+    if (auxPrint != beg || first) {
+      printf("\nAtual: %p, Anterior: %p, Valor: %d, proximo: %p", auxPrint, auxPrint->prev, auxPrint->value, auxPrint->next);
+      printCircular(beg, auxPrint->next, false);
+    }
+  }
+  else {
+    printf("\nNao ha nada na lista");
+  }
 }
 
 void push(list **beg, int val) {
@@ -28,14 +64,13 @@ void push(list **beg, int val) {
     if (*beg == NULL) {
       *beg = newVal;
       newVal->next = NULL;
-      newVal->prev = NULL;
     }
     else {
       newVal->next = *beg;
       *beg = newVal;
-      newVal->prev = NULL;
       aux->prev = newVal;
     }
+    
   }
 }
 
@@ -142,7 +177,7 @@ void pop(list **beg) {
     printf("\nNao ha numeros na lista");
   }
   else {
-    if (aux->next == NULL) {
+    if (aux->next == NULL && aux != NULL) {
       *beg = NULL;
     }
     else {
