@@ -21,6 +21,17 @@ int menu() {
   return op;
 }
 
+int menuOpiton() {
+  int op;
+  do {
+    printf("\n\t1 - Inserir Ordenado");
+    printf("\n\t2 - printa Lista ordenada");
+    printf("\n\t3 - Finalizar programa\n\tEScolha uma opcao acima: ");
+    scanf("%d", &op);
+  } while(op > 3 || op < 1);
+  return op;
+}
+
 void encadeada(list **beg, list *aux) {
   if (*beg != NULL && aux != NULL) {
     if (aux->next == *beg) {
@@ -221,4 +232,36 @@ void removeEnd(list **beg) {
     newEnd->next = NULL;
     free(freeEnd);
   }
+}
+
+void sorted(list **beg, list *ptr, int val) {
+  if (ptr == NULL) {
+    toEnd(beg, val);
+  }
+  else if(ptr == *beg) {
+    push(beg, val);
+  }
+  else {
+    list *newNode = (list*)malloc(sizeof(list));
+    if (newNode) {
+      newNode->value = val;
+      ptr->prev->next = newNode;
+      newNode->prev = ptr->prev;
+      ptr->prev = newNode;
+      newNode->next = ptr;
+    }
+  }
+}
+
+void sortedInsert(list **beg, int valor) {
+  list *aux = *beg, *ptr = NULL;
+  bool find = false;
+  while (aux != NULL) {
+    if (valor < aux->value && !find) {
+      ptr = aux;
+      find = true;
+    }
+    aux = aux->next;
+  }
+  sorted(beg, ptr, valor);
 }
