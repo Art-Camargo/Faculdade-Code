@@ -5,7 +5,7 @@
 
 int main() {
   list *beggining = NULL;
-  int option, val, search;
+  int option, val, searchVal;
   do {
     option = menu();
     system("cls||clear");
@@ -33,8 +33,8 @@ int main() {
       break;
     case 7:
       val = returnInt("Para Inserir no meio, informe o valor que sera inserido: ");
-      search = returnInt("Para Inserir no meio, informe o valor que sera interpratdo com o K (valor do meio): ");
-      addMid(&beggining, beggining, val, search, true);
+      searchVal = returnInt("Para Inserir no meio, informe o valor que sera interpratdo com o K (valor do meio): ");
+      addMid(&beggining, beggining, val, searchVal, true);
       break;
     case 8:
       transformaCircular(beggining, beggining);
@@ -45,8 +45,12 @@ int main() {
       sort(beggining);
       break;
     case 10:
+      val = returnInt("Digite um valor a ser buscado");
+      search(beggining, val, false);
+      break;
+    case 11:
       printf("\nPrograma finalizado\n");
       break;
     }
-  } while(option != 10);
+  } while(option != 11);
 }

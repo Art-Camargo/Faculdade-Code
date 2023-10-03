@@ -14,10 +14,11 @@ int menu() {
     printf("\n\t1 - Inserir inicio\n\t2 - Inserir fim");
     printf("\n\t3 - printar lista encadeada\n\t4 - remover Inicio");
     printf("\n\t5 - remover fim\n\t6 - remover meio");
-    printf("\n\t7 - adicionar meio\n\t8 - printar lista circular\n\t9 - Ordenar\n\t10 - Finaliza");
+    printf("\n\t7 - adicionar meio\n\t8 - printar lista circular\n\t9 - Ordenar\n\t10 - Busca valor");
+    printf("\n\t11 - finalizar");
     printf("\n\tEscolha uma opcao acima: ");
     scanf("%d", &op);
-  } while(op > 10 || op < 1);
+  } while(op > 11 || op < 1);
   return op;
 }
 
@@ -75,6 +76,22 @@ void sort(list *start) {
     sort(start->next); 
   }
 }
+void pop(list **beg) {
+  list *aux = *beg;
+  if (*beg == NULL) {
+    printf("\nNao ha numeros na lista");
+  }
+  else {
+    if (aux->next == NULL && aux != NULL) {
+      *beg = NULL;
+    }
+    else {
+      *beg = aux->next;
+      aux->next->prev = NULL;
+    }
+    free(aux);
+  }
+}
 
 void printCircular(list *beg, list *auxPrint, bool first) {
   if (beg != NULL ) {
@@ -112,6 +129,24 @@ int returnInt(char frase[]) {
   return num;
 }
 
+void search(list *start, int val, bool find) {
+  if (start == NULL) {
+    printf("\nNao ha nada na lista");
+  }
+  else {
+    while(start != NULL) {
+      if (val == start->value) {
+        printf("\nValor encontrado no ponteiro: %p", start);
+        find = true;
+      }
+      start = start->next;
+      if (!find) {
+        printf("\nNao achei o numero");
+      }
+    }
+  }
+}
+
 void addMid(list **beg, list *auxBeg, int valPrev, int valSearch, bool isBeg) {
   list *newValue;
   if (*beg != NULL && auxBeg != NULL) {
@@ -144,12 +179,8 @@ void removeMid(list **beg, list *auxBeg, int val, bool isBeg) {
     if (auxBeg->value == val) {
       if (isBeg) {
         auxBeg = auxBeg->next;
-        *beg = auxBeg;
-        if (auxBeg != NULL) {
-          auxBeg->prev = NULL;
-          free(auxFree);
-          removeMid(beg, auxBeg, val, true);
-        }
+        pop(beg);
+        removeMid(beg, auxBeg, val, true);
       }
       else {
         prev = auxBeg->prev;
@@ -193,31 +224,18 @@ void printList(list *StartOfList) {
     printf("\nNao ha nada na list");
   }
   else {
-    printf("\nValor\t Endereco\tAnterior\tProximo\t");
+    printf("\nValor\t\t Endereco\t\t\tAnterior\t\t\tProximo");
+    printf("\n%d\t\t%p\t\t\t%p\t\t\t\t%p", start->value, start, start->prev, start->next);
+    start = start->next;
     while(start != NULL) {
-      printf("\n %d\t%p\t%p\t%p", start->value, start, start->prev, start->next);
+      printf("\n%d\t\t%p\t\t\t%p\t\t\t%p", start->value, start, start->prev, start->next);
       start = start->next;
     }
   }
   printf("\n\n");
 }
 
-void pop(list **beg) {
-  list *aux = *beg;
-  if (*beg == NULL) {
-    printf("\nNao ha numeros na lista");
-  }
-  else {
-    if (aux->next == NULL && aux != NULL) {
-      *beg = NULL;
-    }
-    else {
-      *beg = aux->next;
-      aux->next->prev = NULL;
-    }
-    free(aux);
-  }
-}
+
 
 void removeEnd(list **beg) {
   list *freeEnd = *beg, *newEnd;
@@ -228,8 +246,13 @@ void removeEnd(list **beg) {
     while(freeEnd->next != NULL) {
       freeEnd = freeEnd->next;
     }
-    newEnd = freeEnd->prev;
-    newEnd->next = NULL;
+    if (freeEnd->prev == NULL) {
+      *beg = NULL;
+    }
+    else {
+      newEnd = freeEnd->prev;
+      newEnd->next = NULL;
+    }
     free(freeEnd);
   }
 }
@@ -256,7 +279,7 @@ void sorted(list **beg, list *ptr, int val) {
 void sortedInsert(list **beg, int valor) {
   list *aux = *beg, *ptr = NULL;
   bool find = false;
-  while (aux != NULL) {
+  while (aux != NULL || find) {
     if (valor < aux->value && !find) {
       ptr = aux;
       find = true;
