@@ -11,12 +11,28 @@ typedef struct tree {
   struct tree *left, *right;
 }tree;
 
-void printTree(tree *root, int level) {
-    if (root) {
-      printf("Value: %d, Left: %p, Right: %p, Current: %p\n", root->data, root->left, root->right, root);
-      printTree(root->left, level + 1);
-      printTree(root->right, level + 1);
-    }
+void printTreePreOrder(tree *root) {
+  if (root) {
+    printf("Value: %d, Left: %p, Right: %p, Current: %p\n", root->data, root->left, root->right, root);
+    printTreePreOrder(root->left);
+    printTreePreOrder(root->right);
+  }
+}
+
+void printSymmetric(tree *root) {
+  if (root) {
+    printSymmetric(root->left);
+    printf("Value: %d, Left: %p, Right: %p, Current: %p\n", root->data, root->left, root->right, root);
+    printSymmetric(root->right);
+  }
+}
+
+void printPosOrder(tree *root) {
+  if (root) {
+    printPosOrder(root->left);
+    printPosOrder(root->right);
+    printf("Value: %d, Left: %p, Right: %p, Current: %p\n", root->data, root->left, root->right, root);
+  }
 }
 
 
@@ -63,9 +79,10 @@ void insertData(tree **root, int data) {
 int menu() {
   int op;
   do {
-    printf("\n1 - inserir na arvore\n2 - printar arvore\n3 - fim\nInforme uma opcao: ");
+    printf("\n1 - inserir na arvore\n2 - printar arvore pre ordem\n3 - printar arvore pos ordem");
+    printf("\n4 - printar simetrica\n5 - fim\nEScolha uma opcao acima: ");
     scanf("%d", &op);
-  } while(op > 3 || op < 1);
+  } while(op > 5 || op < 1);
   return op;
 }
 
@@ -74,18 +91,25 @@ int main() {
   int option, data;
   do {
     option = menu();
+    system("cls||clear");
     switch (option) {
       case 1:
         data = getData("Informe um valor: ");
         insertData(&root, data);
         break;
       case 2: 
-        printTree(root, 0);
+        printTreePreOrder(root);
         break;
-      case 3:
+      case 3: 
+        printPosOrder(root);
+        break;
+      case 4: 
+        printSymmetric(root);
+        break;
+      case 5:
         printf("\nFIMMMMMMMMMMMMMMMMMMMMMM\n");
         break;
     }
-  } while(option != 3);
+  } while(option != 5);
   return 0;
 }
