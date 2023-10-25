@@ -3,8 +3,7 @@
 // #include <search.h>
 #include <stdbool.h>
 //left and right null -> leaf
-//main root, branchs
-
+//main //Artur de Camargo e Marcos Emerim
 
 typedef struct tree {
   int data;
@@ -34,6 +33,7 @@ void printPosOrder(tree *root) {
     printf("Value: %d, Left: %p, Right: %p, Current: %p\n", root->data, root->left, root->right, root);
   }
 }
+
 
 
 int getData(char string[]) {
