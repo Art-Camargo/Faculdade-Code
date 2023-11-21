@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+//Artur de Camargo e Julio Borges de Castilhos
 //vertices são os nós
 //As arestas, entretanto, são as conexões entre os vertices a partir de uma lógica em um set
 //struct para vertices, struct para arestas
-
-typedef struct node {
+#undef IS_UNDIRECTED_GRAPH 
+typedef struct node { 
   int vertex;
   struct node *next;
 } node;
@@ -60,6 +61,7 @@ bool edgeExists(node *head, int destinationVertex) {
   return false; 
 }
 
+
 void addEdge(graphType *graph, int originVertex, int destinationVertex) {
   if (!(originVertex >= graph->numVertex || destinationVertex >= graph->numVertex)) {
     if (!edgeExists(graph->linkedList[originVertex], destinationVertex)) {
@@ -67,9 +69,16 @@ void addEdge(graphType *graph, int originVertex, int destinationVertex) {
       if (newNodeToOrigin) {
         newNodeToOrigin->next = graph->linkedList[originVertex];
         graph->linkedList[originVertex] = newNodeToOrigin;
+        #ifdef IS_UNDIRECTED_GRAPH 
+          node *newNodeToDestination = createNode(originVertex);
+          if (newNodeToDestination) {
+            newNodeToDestination->next = graph->linkedList[destinationVertex];
+            graph->linkedList[destinationVertex] = newNodeToDestination;
+          }
+        #endif
       }
     } else {
-      printf("\nAresta entre os vértices %d e %d já existe.\n", originVertex, destinationVertex);
+      printf("\nAresta entre os vertices %d e %d ja existe.\n", originVertex, destinationVertex);
     }
   } else {
     printf("\nCondições inválidas!");
@@ -83,7 +92,10 @@ void printGraph(graphType *graph) {
     node *currentNode = graph->linkedList[j];
     printf("\nVertice %d: ", j);
     while(currentNode) {
-      printf("%d -> ", currentNode->vertex);
+      printf("%d  ", currentNode->vertex);
+      if (currentNode->next != NULL) {
+        printf("->  ");
+      }
       currentNode = currentNode->next;
     }
   }
