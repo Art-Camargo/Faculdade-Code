@@ -5,16 +5,24 @@
 //vertices são os nós
 //As arestas, entretanto, são as conexões entre os vertices a partir de uma lógica em um set
 //struct para vertices, struct para arestas
-#undef IS_UNDIRECTED_GRAPH 
+#define IS_UNDIRECTED_GRAPH 
+#define RED "\x1b[91m"
+#define CLR "\x1b[0m"
+
 typedef struct node { 
   int vertex;
   struct node *next;
 } node;
 
 typedef struct graphType {
+  int *visited;
   int numVertex;
   node **linkedList;
 }graphType;
+
+typedef struct matrix {
+  int **matrix;
+}matrixAdj;
 
 int getGenericValue(char mssg[]) {
   int num;
@@ -40,6 +48,7 @@ graphType *createGraph(int numVert) {
   if (graph) {
     graph->numVertex = numVert;
     graph->linkedList = (node**)malloc(numVert * sizeof(node*));
+    graph->visited = (int*)malloc(numVert * sizeof(int));
     if (graph->linkedList) {
       for (i = 0; i < numVert; i++) {
         graph->linkedList[i] = NULL;
@@ -61,6 +70,19 @@ bool edgeExists(node *head, int destinationVertex) {
   return false; 
 }
 
+void depthFirstSearch(graphType *graph, int vertex) {
+  node *temp = graph->linkedList[vertex];
+  int connectedVertex;
+  graph->visited[vertex] = 1;
+  printf("Visitei %d \n", vertex);
+  while (temp != NULL) {
+    connectedVertex = temp->vertex;
+    if (!graph->visited[connectedVertex]) {
+      depthFirstSearch(graph, connectedVertex);
+    }
+    temp = temp->next;
+  }
+}
 
 void addEdge(graphType *graph, int originVertex, int destinationVertex) {
   if (!(originVertex >= graph->numVertex || destinationVertex >= graph->numVertex)) {
@@ -86,38 +108,88 @@ void addEdge(graphType *graph, int originVertex, int destinationVertex) {
 }
 
 
-void printGraph(graphType *graph) {
+void printGraphByLinkedList(graphType *graph) {
   int j;
   for (j = 0; j < graph->numVertex; j++) {
     node *currentNode = graph->linkedList[j];
     printf("\nVertice %d: ", j);
     while(currentNode) {
-      printf("%d  ", currentNode->vertex);
+      printf(CLR"%d  ", currentNode->vertex);
       if (currentNode->next != NULL) {
-        printf("->  ");
+        printf(RED"->  ");
       }
       currentNode = currentNode->next;
     }
   }
 }
 
+
 int menuOption() {
   int op;
   do {
-    printf("\n1 - inserir aresta\n2 - printar grafo\n3 - halt\nEscolha uma opcao: ");
+    printf("\n\n1 - inserir aresta\n2 - printar grafo\n3 - criar e printar matriz\n4 - busca com profundidade\n5 - halt\nEscolha uma opcao: ");
     scanf("%d", &op);
     system("clear||cls");
-  } while(op > 3 || op < 1);
+  } while(op > 5 || op < 1);
   return op;
+}
+
+
+
+void createAndInitMatrix(matrixAdj **matrix, int numMaxVertex) {
+  int i, j;
+  *matrix = (matrixAdj *)malloc(sizeof(matrixAdj));
+  if (*matrix) {
+    (*matrix)->matrix = (int **)malloc(numMaxVertex * numMaxVertex * sizeof(int *));
+    for (i = 0; i < numMaxVertex; i++) {
+      (*matrix)->matrix[i] = (int *)malloc(numMaxVertex * sizeof(int));
+    }
+    for (i = 0; i < numMaxVertex; i++) {
+      for (j = 0; j < numMaxVertex; j++) {
+        (*matrix)->matrix[i][j] = 0;
+      }
+    }
+  }
+}
+
+void fillMatrixAndPrint(matrixAdj **matrix, int numMaxVertex, graphType *graph) {
+  int k = 0, z;
+  node *currentNode;
+  while (k < numMaxVertex) {
+    currentNode = graph->linkedList[k];
+    while(currentNode) {
+      (*matrix)->matrix[k][currentNode->vertex] = 1;
+      currentNode = currentNode->next;
+    }
+    k++;
+  }
+  //Abaixo, não é complexo, é apenas uma lógica para printar de uma forma pretty. A matriz fica bem clean
+  printf("\n ");
+  for (k = 0; k < numMaxVertex; k++) {
+    printf(RED" %d", k);
+  }
+  for (z = 0; z < numMaxVertex; z++) {
+    printf(RED"\n%d ", z);
+    for (k = 0; k < numMaxVertex; k++) {
+      if ((*matrix)->matrix[z][k]) {
+        printf(CLR"%d ", (*matrix)->matrix[z][k]);
+      } else {
+        printf(CLR"• ");
+      }
+    }
+  }
 }
 
 int main() {
   graphType *graph;
+  matrixAdj *matrix;
   int numMaxVertex = getGenericValue("\nInforme a quantidade de vertices do grafo: "), op, originVertex, destinationVertex;
   graph = createGraph(numMaxVertex);
-  if (graph) {
+  createAndInitMatrix(&matrix, numMaxVertex);
+  if (graph && matrix) {
     do {
       op = menuOption();
+      system("clear||cls");
       switch (op) {
         case 1:
           originVertex = getGenericValue("\nInforme o vertice origem: ");
@@ -125,12 +197,20 @@ int main() {
           addEdge(graph, originVertex, destinationVertex);
           break;
         case 2:
-          printGraph(graph);
+          printGraphByLinkedList(graph);
+          break;
+        case 3: 
+          fillMatrixAndPrint(&matrix, numMaxVertex, graph);
+          break;
+        case 4:
+          originVertex = getGenericValue("\nInforme o vertice para a busca: ");
+          depthFirstSearch(graph, originVertex);
           break;
         default:
+          free(graph), free(matrix);
           printf("\nFIIIIIIIIIIIIIIM");
       }
-    } while(op != 3);
+    } while(op != 5);
   }
   return 0;
 }
