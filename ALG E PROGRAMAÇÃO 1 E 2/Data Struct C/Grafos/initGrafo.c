@@ -72,16 +72,21 @@ bool edgeExists(node *head, int destinationVertex) {
 
 void depthFirstSearch(graphType *graph, int vertex) {
   node *temp = graph->linkedList[vertex];
-  int connectedVertex;
   graph->visited[vertex] = 1;
   printf("Visitei %d \n", vertex);
   while (temp != NULL) {
-    connectedVertex = temp->vertex;
-    if (!graph->visited[connectedVertex]) {
-      depthFirstSearch(graph, connectedVertex);
+    if (!graph->visited[temp->vertex]) {
+      depthFirstSearch(graph, temp->vertex);
     }
     temp = temp->next;
   }
+}
+
+void depthFirstSearchInit(graphType *graph, int vertex) {
+  for (int i = 0; i < graph->numVertex; ++i) {
+    graph->visited[i] = 0;
+  }
+  depthFirstSearch(graph, vertex);
 }
 
 void addEdge(graphType *graph, int originVertex, int destinationVertex) {
@@ -93,7 +98,7 @@ void addEdge(graphType *graph, int originVertex, int destinationVertex) {
         graph->linkedList[originVertex] = newNodeToOrigin;
         #ifdef IS_UNDIRECTED_GRAPH 
           node *newNodeToDestination = createNode(originVertex);
-          if (newNodeToDestination) {
+          if (newNodeToDestination && originVertex != destinationVertex) {
             newNodeToDestination->next = graph->linkedList[destinationVertex];
             graph->linkedList[destinationVertex] = newNodeToDestination;
           }
@@ -152,6 +157,10 @@ void createAndInitMatrix(matrixAdj **matrix, int numMaxVertex) {
   }
 }
 
+bool isLessThanMax(int numMaxVert, int numVertCurrent) {
+  return numVertCurrent >= numMaxVert ? false : true;
+}
+
 void fillMatrixAndPrint(matrixAdj **matrix, int numMaxVertex, graphType *graph) {
   int k = 0, z;
   node *currentNode;
@@ -174,7 +183,7 @@ void fillMatrixAndPrint(matrixAdj **matrix, int numMaxVertex, graphType *graph) 
       if ((*matrix)->matrix[z][k]) {
         printf(CLR"%d ", (*matrix)->matrix[z][k]);
       } else {
-        printf(CLR"• ");
+        printf(CLR"- ");
       }
     }
   }
@@ -204,7 +213,9 @@ int main() {
           break;
         case 4:
           originVertex = getGenericValue("\nInforme o vertice para a busca: ");
-          depthFirstSearch(graph, originVertex);
+          if (isLessThanMax(graph->numVertex, originVertex)) {
+            depthFirstSearchInit(graph, originVertex);
+          } 
           break;
         default:
           free(graph), free(matrix);
