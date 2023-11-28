@@ -83,7 +83,8 @@ void depthFirstSearch(graphType *graph, int vertex) {
 }
 
 void depthFirstSearchInit(graphType *graph, int vertex) {
-  for (int i = 0; i < graph->numVertex; ++i) {
+  int i;
+  for (i = 0; i < graph->numVertex; i++) {
     graph->visited[i] = 0;
   }
   depthFirstSearch(graph, vertex);
@@ -108,7 +109,7 @@ void addEdge(graphType *graph, int originVertex, int destinationVertex) {
       printf("\nAresta entre os vertices %d e %d ja existe.\n", originVertex, destinationVertex);
     }
   } else {
-    printf("\nCondições inválidas!");
+    printf("\nCondicoes invalidas!");
   }
 }
 
@@ -158,7 +159,11 @@ void createAndInitMatrix(matrixAdj **matrix, int numMaxVertex) {
 }
 
 bool isLessThanMax(int numMaxVert, int numVertCurrent) {
-  return numVertCurrent >= numMaxVert ? false : true;
+  if (numVertCurrent >= numMaxVert) {
+    printf("\nVERTICE NAO EXISTE");
+    return false;
+  }
+  return true;
 }
 
 void fillMatrixAndPrint(matrixAdj **matrix, int numMaxVertex, graphType *graph) {
