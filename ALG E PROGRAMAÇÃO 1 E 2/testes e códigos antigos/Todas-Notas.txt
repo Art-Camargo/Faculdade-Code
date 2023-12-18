@@ -1,0 +1,17 @@
+O que eu encotrei (pode estar errado):
+1. a) xcm = 2,06 metros
+   b) ycm = 1,68 metros
+
+2. ycm = -39,28 metros.
+
+
+3. fmed = 2125 N
+
+
+4. v2 final = 14 m/s
+
+
+5. t = 7,17s
+
+
+6. I placa = 0,00107 kg.m²
