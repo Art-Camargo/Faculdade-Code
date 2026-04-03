@@ -25,12 +25,10 @@ void preenche_vetor(int vector[], int tam_vetor) {
 int binary_search(int vetorz[], int num_busca, int tam) {
     int up = tam - 1;
     int down = 0;
-
     while (down <= up) {
         int posicao = (up + down) / 2;
-
         if (vetorz[posicao] == num_busca) {
-            return posicao; // Elemento encontrado
+            return posicao; 
         } else if (vetorz[posicao] < num_busca) {
             down = posicao + 1;
         } else {
@@ -38,7 +36,7 @@ int binary_search(int vetorz[], int num_busca, int tam) {
         }
     }
 
-    return -1; // Elemento não encontrado
+    return -1; // Elemento nï¿½o encontrado
 }
 
 
