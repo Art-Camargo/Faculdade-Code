@@ -90,4 +90,4 @@ def imprimir_tabela(n_inicial=3, n_final=10):
 
 
 if __name__ == "__main__":
-    imprimir_tabela(3, 10)
+    imprimir_tabela(1, 10)
