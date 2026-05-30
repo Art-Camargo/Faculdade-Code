@@ -1,0 +1,123 @@
+clc;
+clear;
+xdel(winsid());
+
+s = %s;
+
+// =====================================================
+// DADOS DO PROBLEMA
+// =====================================================
+P = -4 + 4*%i;
+
+// Planta:
+// G(s) = 1 / [s(s+5)(s+10)]
+G = syslin('c', 1 / (s * (s + 5) * (s + 10)));
+
+// Compensador obtido:
+// Gc(s) = 287.5 (s + 3.33) / (s + 9.6)
+Kc = 287.5;
+z = 3.33;
+p = 9.6;
+
+Gc = syslin('c', Kc * (s + z) / (s + p));
+
+// Malha aberta compensada
+MA_comp = Gc * G;
+
+// Malhas fechadas
+MF_sem = G /. 1;
+MF_comp = MA_comp /. 1;
+
+// =====================================================
+// 1) LUGAR DAS RAÍZES SEM COMPENSAÇÃO
+// =====================================================
+scf(1);
+clf();
+evans(G);
+title("Lugar das raízes - Sistema sem compensação");
+xgrid();
+
+// Marca polo desejado
+plot(real(P), imag(P), "ro");
+plot(real(conj(P)), imag(conj(P)), "ro");
+xstring(real(P), imag(P), "  P desejado = -4 + j4");
+xstring(real(conj(P)), imag(conj(P)), "  -4 - j4");
+
+// =====================================================
+// 2) LUGAR DAS RAÍZES COM COMPENSAÇÃO
+// =====================================================
+scf(2);
+clf();
+evans(MA_comp);
+title("Lugar das raízes - Sistema compensado");
+xgrid();
+
+// Marca polo desejado
+plot(real(P), imag(P), "ro");
+plot(real(conj(P)), imag(conj(P)), "ro");
+xstring(real(P), imag(P), "  P desejado = -4 + j4");
+xstring(real(conj(P)), imag(conj(P)), "  -4 - j4");
+
+// =====================================================
+// 3) RESPOSTA AO DEGRAU - COMPARAÇÃO
+// =====================================================
+t = 0:0.01:10;
+
+y_sem = csim('step', t, MF_sem);
+y_comp = csim('step', t, MF_comp);
+
+scf(3);
+clf();
+plot(t, y_sem, "r--");
+plot(t, y_comp, "b-");
+legend("Sem compensação", "Com compensação");
+xlabel("Tempo (s)");
+ylabel("Amplitude");
+title("Comparação da resposta ao degrau");
+xgrid();
+
+// =====================================================
+// 4) RESPOSTA AO DEGRAU - SÓ COMPENSADO
+// =====================================================
+scf(4);
+clf();
+plot(t, y_comp, "b-");
+xlabel("Tempo (s)");
+ylabel("Amplitude");
+title("Resposta ao degrau - Sistema compensado");
+xgrid();
+
+// =====================================================
+// 5) CÁLCULO DOS POLOS DE MALHA FECHADA COMPENSADA
+// =====================================================
+// Denominador característico:
+// s(s+5)(s+10)(s+9.6) + 287.5(s+3.33)
+
+den_comp = s * (s + 5) * (s + 10) * (s + p) + Kc * (s + z);
+polos_comp = roots(den_comp);
+
+disp("========================================");
+disp("Polo desejado:");
+disp(P);
+
+disp("Polos de malha fechada compensada:");
+disp(polos_comp);
+
+// =====================================================
+// 6) CONFERÊNCIA DA CONDIÇÃO DE MÓDULO E ÂNGULO
+// =====================================================
+G_P = 1 / (P * (P + 5) * (P + 10));
+Gc_P = Kc * (P + z) / (P + p);
+
+valor = Gc_P * G_P;
+
+modulo = abs(valor);
+angulo = atan(imag(valor), real(valor)) * 180 / %pi;
+
+disp("Modulo de Gc(P)G(P):");
+disp(modulo);
+
+disp("Angulo de Gc(P)G(P), em graus:");
+disp(angulo);
+
+disp("========================================");
